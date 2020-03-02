@@ -56,6 +56,7 @@ function generateToken(user) {
   const payload = {
     subject: user.id, // sub in payload is what the token is about
     username: user.username,
+    type: user.userType
     // ...otherData
   };
 
