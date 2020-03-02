@@ -4,7 +4,8 @@ const Users = require('./user-model.js')
 module.exports = {
     validateUser,
     validateCreateUser,
-    validateCredentials
+    validateCredentials,
+    validateUserExists
 }
 
 function validateCreateUser(req,res,next) {
@@ -41,5 +42,17 @@ function validateCredentials(req, res, next) {
     })
     .catch( err => {
         res.status(500).json({errorMessage: "Could not find user."})
+    })
+}
+
+function validateUserExists(req,res,next) {
+    const { id } = req.params;
+
+    Users.findById(id)
+    .then( user => {
+        next();
+    })
+    .catch( err => {
+        res.status(404).json({errorMessage: 'User does not exist.'})
     })
 }

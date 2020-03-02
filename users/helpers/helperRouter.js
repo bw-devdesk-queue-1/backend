@@ -2,7 +2,7 @@ const router = require('express').Router({mergeParams: true});
 const Helpers = require('./helper-model.js');
 const verifyHelper = require('./verifyHelperRole.js')
 
-router.get('/:helperId', (req, res) => {
+router.get('/:helperId', verifyHelper, (req, res) => {
     const { helperId } = req.params;
     
     Helper.getHelperTickets(helperId)

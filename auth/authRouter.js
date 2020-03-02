@@ -3,7 +3,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
 const Users = require('../users/user-model.js');
-const {validateUser, validateCreateUser, validateCredentials} = require('../users/user-middleware.js');
+const {validateUser, validateCreateUser, validateCredentials, validateUserExists} = require('../users/user-middleware.js');
 
 const jwt = require('jsonwebtoken'); // installed this library
 const secrets = require('./config/secret.js');
@@ -13,7 +13,7 @@ router.post('/register', validateCreateUser, (req, res) => {
     // create hash
     const credentials = req.body;
 
-    const hash = bcrypt.hashSync(credentials.password, 14);
+    const hash = bcrypt.hashSync(credentials.password, 2);
 
     credentials.password = hash;
     
@@ -26,6 +26,7 @@ router.post('/register', validateCreateUser, (req, res) => {
         res.status(500).json({errorMessage: "The user could not be created."})
     })
 })
+
 
 router.post('/login', validateUser, validateCredentials, (req, res) => {
     let { id, username, password } = req.body;
@@ -69,5 +70,43 @@ function generateToken(user) {
 }
 
 
+router.put('/:id', validateCreateUser, validateUserExists, (req, res) => {
+    const { id } = req.params;
+
+    // create hash
+    const credentials = req.body;
+
+    const hash = bcrypt.hashSync(credentials.password, 2);
+
+    credentials.password = hash;
+
+    credentials.id = id;
+    
+    // add the user to the database
+    Users.update(credentials)
+    .then( id => {
+        res.status(201).json({id: id[0], ...credentials.username})
+    })
+    .catch( err => {
+        res.status(500).json({errorMessage: "The user could not be updated."})
+    })
+})
+
+
+router.delete('/:id', validateUserExists, (req, res) => {
+    const { id } = req.params;
+
+    Users.remove(id)
+    .then( success => {
+        if(success) {
+            res.status(200).json({message: 'User was deleted.'})
+        } else {
+            res.status(404).json({message: 'User could not be found.'})
+        }
+    })
+    .catch( err => {
+        res.status(500).json({errorMessage: 'There was an error deleting the user.'})
+    })
+})
 
 module.exports = router;
