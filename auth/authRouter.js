@@ -3,13 +3,13 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
 const Users = require('../users/user-model.js');
-const uMid = require('../users/user-middleware.js');
+const {validateUser, validateCreateUser, validateCredentials} = require('../users/user-middleware.js');
 
 const jwt = require('jsonwebtoken'); // installed this library
 const secrets = require('./config/secrets.js');
 
 // actions
-router.post('/register', uMid.validateCreateUser, (req, res) => {
+router.post('/register', validateCreateUser, (req, res) => {
     // create hash
     const credentials = req.body;
 
@@ -27,7 +27,7 @@ router.post('/register', uMid.validateCreateUser, (req, res) => {
     })
 })
 
-router.post('/login', uMid.validateUser, uMid.validateCredentials, (req, res) => {
+router.post('/login', validateUser, validateCredentials, (req, res) => {
     let { id, username, password } = req.body;
     Users.findBy(username)
         .then(user => {

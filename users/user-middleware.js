@@ -3,6 +3,7 @@ const Users = require('./user-model.js')
 
 module.exports = {
     validateUser,
+    validateCreateUser,
     validateCredentials
 }
 
