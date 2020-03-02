@@ -57,7 +57,7 @@ function generateToken(user) {
   const payload = {
     subject: user.id, // sub in payload is what the token is about
     username: user.username,
-    type: user.userType
+    userType: user.userType
     // ...otherData
   };
 
@@ -106,6 +106,16 @@ router.delete('/:id', validateUserExists, (req, res) => {
     })
     .catch( err => {
         res.status(500).json({errorMessage: 'There was an error deleting the user.'})
+    })
+})
+
+router.get('/users', (req, res) => {
+    Users.find()
+    .then( users => {
+        res.status(200).json(users);
+    })
+    .catch( err => {
+        res.status(500).json({errorMessage: "there was an error getting all the users"})
     })
 })
 

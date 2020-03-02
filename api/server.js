@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const authRouter = require('../auth/authRouter.js');
 const authenticate = require('../auth/authenticate-middleware.js');
 
-const ticketRouter = require('../tickets/ticketRouter.js');
+const ticketRouter = require('../users/tickets/ticketRouter.js');
 
 const server = express();
 

@@ -7,7 +7,6 @@ module.exports = {
     findByFilter,
     update,
     remove
-    
 }
 
 /* 
@@ -32,7 +31,7 @@ module.exports = {
 // ---------------- CREATE ----------------
 
 // create a ticket
-function insert(studentId, ticket) {
+function insert(ticket) {
     return db('tickets').insert(ticket);
 }
 

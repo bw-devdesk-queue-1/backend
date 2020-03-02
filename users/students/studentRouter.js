@@ -1,9 +1,9 @@
 const router = require('express').Router({mergeParams: true});
 const Students = require('./student-model.js');
-const verifyStudent = require('./students/verifyStudents.js');
 const { verifyStudentExists, verifyTicketExists, verifyTicket } = require('./student-middleware.js');
 
 // url to get here: base-url/api/tickets/:id/students
+// url to get here: base-url/api/tickets/students/:id
 
 /*
     Students should be able to:
@@ -24,14 +24,14 @@ const { verifyStudentExists, verifyTicketExists, verifyTicket } = require('./stu
 
 //// POST
 // create a ticket for a student
-router.post('/:studentId', verifyStudent, verifyStudentExists, verifyTicket, (req, res) => {
+router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
 
     // grab from body
-    const { title, description, tried, category, status } = req.body;
+    const { title, description, tried, category } = req.body;
     const { id } = req.params; // studentId
     
     // create ticket
-    Students.insert({ title, description, tried, category, status })
+    Students.insert({ title, description, tried, category })
     .then( ticketId => {
         // link to userTickets
         Students.linkToStudent(id, ticketId)
@@ -49,7 +49,7 @@ router.post('/:studentId', verifyStudent, verifyStudentExists, verifyTicket, (re
                 }
             })
         })
-        .catch( err => {
+        .catch( async err => {
             await Students.remove(ticketId);
             res.status(500).json({ errorMessage: "Ticket was created but not linked, will be deleted."});
         })
