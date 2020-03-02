@@ -13,7 +13,7 @@ exports.up = function(knex) {
        tbl.string('description', 256).notNullable();
        tbl.string('tried', 256).notNullable();
        tbl.string('category', 256).notNullable();
-       tbl.string('status', 256).notNullable(); // Resolved, Pending (its assigned to someone), or Not Assigned (newly created)
+       tbl.string('status', 256); // Resolved, Pending (its assigned to someone), or Not Assigned (newly created)
     })
     .createTable('userTickets', tbl => {
       tbl.increments()

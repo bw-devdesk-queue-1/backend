@@ -1,21 +1,25 @@
 const db = require('../../data/dbConfig.js')
 
 module.exports = {
+    insert,
+    linkToStudent,
+    find,
+    findByFilter,
     update,
-    remove,
-    findByStudentId,
-    findByFilter  
+    remove
+    
 }
 
 /* 
     Endpoints:
 
+    - CREATE (POST)
+    -- create a ticket ----------------------- ( insert )
+    -- link a ticket to a student ------------ ( linkToStudent )
+
     - READ (GET)
-    -- all the tickets in the system --------- ( find )
-    -- a specific ticket --------------------- ( findBy )
-    -- all tickets for a student ------------- ( findByStudentId )
-    -- all tickets for filter just ticket ---- ( findTicketsByFilter )
-    -- all tickets for filter from student --- ( findStudentTicketsByFilter )
+    -- all tickets for a student ------------- ( find )
+    -- all tickets for filter from student --- ( findByFilter )
 
     - UPDATE (PUT)
     -- update a ticket's information --------- ( update )
@@ -25,16 +29,27 @@ module.exports = {
 */
 
 
-// ---------------- READ ----------------
+// ---------------- CREATE ----------------
 
-// grab all tickets for a student
-function findByStudentId(studentid) {
-    return db("tickets a t")
-    .join("userTickets as u", "u.ticketId", "t.id")
-    .where("studentId", studentid)
+// create a ticket
+function insert(studentId, ticket) {
+    return db('tickets').insert(ticket);
+}
+
+// link ticket to student
+function linkToStudent(studentId, ticketId) {
+    return db('userTickets').insert({studentId, ticketId});
 }
 
 
+// ---------------- READ ----------------
+
+// grab all tickets for a student
+function find(studentid) {
+    return db("tickets as t")
+    .join("userTickets as u", "u.ticketId", "t.id")
+    .where("studentId", studentid)
+}
 
 // find all tickets for student by filter
 function findByFilter(id, filter) {
