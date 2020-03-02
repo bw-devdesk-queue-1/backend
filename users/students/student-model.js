@@ -1,20 +1,14 @@
 const db = require('../../data/dbConfig.js')
+
 module.exports = {
-    find,
-    findById,
-    add,
     update,
     remove,
-    findBy,
-    findByStudentId
+    findByStudentId,
+    findByFilter  
 }
 
 /* 
     Endpoints:
-
-    - CREATE (POST)
-    -- create a ticket ----------------------- ( insert )
-    -- link student to ticket ---------------- ( linkToStudent )
 
     - READ (GET)
     -- all the tickets in the system --------- ( find )
@@ -30,31 +24,8 @@ module.exports = {
     -- delete a ticket ----------------------- ( remove )
 */
 
-// ---------------- CREATE ----------------
-
-// create a ticket
-function insert(studentId, ticket) {
-    return db('tickets').insert(ticket);
-}
-
-// link ticket to student
-function linkToStudent(studentId, ticketId) {
-    return db('userTickets').insert({studentId, ticketId});
-}
 
 // ---------------- READ ----------------
-
-// grab all tickets
-function find(){
-    return db('tickets')
-}
-
-// grab a specific ticket for anyone
-function findById(id) {
-    return db('tickets')
-    .where({id})
-    .first()
-}
 
 // grab all tickets for a student
 function findByStudentId(studentid) {
@@ -63,14 +34,10 @@ function findByStudentId(studentid) {
     .where("studentId", studentid)
 }
 
-// find a ticket from a given property
-function findTicketsByFilter(filter) {
-    return db('tickets')
-      .where(filter);
-}
+
 
 // find all tickets for student by filter
-function findStudentTicketsByFilter(id, filter) {
+function findByFilter(id, filter) {
     return db("tickets a t")
     .join("userTickets as u", 'u.studentId', knex.raw('?', [id]))
     .where(filter)
