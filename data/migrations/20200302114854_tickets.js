@@ -17,9 +17,25 @@ exports.up = function(knex) {
     })
     .createTable('userTickets', tbl => {
       tbl.increments()
-      tbl.integer('studentId').unsigned().notNullable().references('id').inTable('users').onUpdate('CASCADE').onDelete('CASCADE'); // will only every be a actualy id with userType student
-      tbl.integer('ticketId').unsigned().notNullable().references('id').inTable('tickets').onUpdate('CASCADE').onDelete('CASCADE');
-      tbl.integer('helperId').unsigned(); //this determines if someone is assigned (don't care about resolved or un-assigned)
+
+      tbl.integer('studentId')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE'); // will only every be a actualy id with userType student
+      
+      tbl.integer('ticketId')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('tickets')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE');
+      
+      tbl.integer('helperId')
+        .unsigned(); //this determines if someone is assigned (don't care about resolved or un-assigned)
     })
 };
 

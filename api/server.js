@@ -9,7 +9,6 @@ const ticketRouter = require('../users/tickets/ticketRouter.js');
 
 const server = express();
 
-
 server.use(helmet());
 server.use(cors());
 server.use(express.json());

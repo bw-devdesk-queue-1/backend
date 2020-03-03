@@ -1,4 +1,5 @@
 const db = require('../../data/dbConfig.js')
+const knex = require('knex');
 
 module.exports = {
     insert,
@@ -37,7 +38,7 @@ function insert(ticket) {
 
 // link ticket to student
 function linkToStudent(studentId, ticketId) {
-    return db('userTickets').insert({studentId, ticketId});
+    return db('userTickets').insert({studentId: studentId, ticketId: ticketId, helperId: 0});
 }
 
 

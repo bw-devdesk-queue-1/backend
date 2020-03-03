@@ -16,11 +16,13 @@ router.post('/register', validateCreateUser, (req, res) => {
     const hash = bcrypt.hashSync(credentials.password, 2);
 
     credentials.password = hash;
+
+    // console.log('credentials', credentials);
     
     // add the user to the database
     Users.insert(credentials)
     .then( id => {
-        res.status(201).json({id: id[0], ...credentials.username})
+        res.status(201).json({id: id[0], username: credentials.username, userType: credentials.userType})
     })
     .catch( err => {
         res.status(500).json({errorMessage: "The user could not be created."})
@@ -32,14 +34,14 @@ router.post('/login', validateUser, validateCredentials, (req, res) => {
     let { id, username, password } = req.body;
     Users.findBy(username)
         .then(user => {
-        console.log(user);
+        // console.log(user);
         if (user && bcrypt.compareSync(password, user.password)) {
             const token = generateToken(user); // new line
     
             // the server needs to return the token to the client
             // this doesn't happen automatically like it happens with cookies
             res.status(200).json({
-                id: id,
+                id: user.id,
                 username: username,            
                 userType: user.userType, // return userType
                 token // attach the token as part of the response
@@ -85,7 +87,7 @@ router.put('/:id', validateCreateUser, validateUserExists, (req, res) => {
     // add the user to the database
     Users.update(credentials)
     .then( id => {
-        res.status(201).json({id: id[0], ...credentials.username})
+        res.status(201).json({id: Number(credentials.id), username: credentials.username, userType: credentials.userType})
     })
     .catch( err => {
         res.status(500).json({errorMessage: "The user could not be updated."})

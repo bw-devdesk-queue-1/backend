@@ -1,4 +1,4 @@
-const router = require('express').Router({mergeParams: true});
+const router = require('express').Router();
 const studentRouter = require('../students/studentRouter.js');
 const helperRouter = require('../helpers/helperRouter.js');
 
@@ -11,7 +11,7 @@ const isEmpty = require('../../utils/isEmpty.js');
 // url to be here: /api/tickets?status=Un-Assigned
 
 // setup student and helper routers
-router.use('/students', verifyStudentRole, studentRouter);
+router.use('/students', studentRouter);
 // router.use('/helpers', helperRouter);
 
 //// GET

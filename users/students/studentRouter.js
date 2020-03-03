@@ -1,6 +1,7 @@
 const router = require('express').Router({mergeParams: true});
 const Students = require('./student-model.js');
 const { verifyStudentExists, verifyTicketExists, verifyTicket } = require('./student-middleware.js');
+const isEmpty = require('../../utils/isEmpty.js');
 
 // url to get here: base-url/api/tickets/:id/students
 // url to get here: base-url/api/tickets/students/:id
@@ -28,29 +29,31 @@ router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
 
     // grab from body
     const { title, description, tried, category } = req.body;
-    const { id } = req.params; // studentId
+    const { studentId } = req.params; // studentId
     
     // create ticket
     Students.insert({ title, description, tried, category })
     .then( ticketId => {
         // link to userTickets
-        Students.linkToStudent(id, ticketId)
+        console.log('linking', studentId, ticketId[0])
+        Students.linkToStudent(studentId, ticketId[0])
         .then( userTicketId => {
             //ticket was linked
             res.status(201).json({
-                studentId: id,
+                studentId: Number(studentId),
                 ticket: {
-                    id: ticketId,
+                    id: ticketId[0],
                     title, 
                     description, 
                     tried, 
                     category, 
-                    status
+                    status: 'Un-assigned'
                 }
             })
         })
-        .catch( async err => {
-            await Students.remove(ticketId);
+        .catch( err => {
+            // await Students.remove(ticketId[0]);
+            console.log(err);
             res.status(500).json({ errorMessage: "Ticket was created but not linked, will be deleted."});
         })
     })
@@ -64,7 +67,8 @@ router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
 router.get('/:studentId', verifyStudentExists, (req, res) => {
     
     const { studentId } = req.params;
-    const isQuery = isEmpty(req.query);
+    const isQuery = !isEmpty(req.query);
+    // console.log(isQuery);
 
     if(isQuery) {
 
@@ -82,7 +86,22 @@ router.get('/:studentId', verifyStudentExists, (req, res) => {
         
         Students.find(studentId)
         .then(tickets => {
-            res.status(200).json(tickets)
+            //format
+            const newTickets = tickets.map( ticket => {
+                return {
+                    studentId: ticket.studentId,
+                    helperId: ticket.helperId,
+                    ticket: {
+                        id: ticket.id,
+                        title: ticket.title,
+                        description: ticket.description,
+                        tried: ticket.tried,
+                        category: ticket.category,
+                        status: ticket.status
+                    }
+                }
+            })
+            res.status(200).json(newTickets)
         })
         .catch(err => {
             console.log(err)
@@ -94,15 +113,19 @@ router.get('/:studentId', verifyStudentExists, (req, res) => {
 
 //// PUT
 // update a ticket
-router.put('/', verifyStudentExists, verifyTicketExists, verifyTicket, (req,res) => {
+router.put('/', verifyTicketExists, verifyTicket, (req,res) => {
     // grab the ticket id and changes
-    const { id } = req.params;
     const changes = req.body;
-
+    console.log(req.params);
     // update the ticket
-    Students.update(id, changes)
-    .then( ticket => {
-        res.status(200).json(ticket);
+    Students.update(changes.id, changes)
+    .then( success => {
+        if(success) {
+            res.status(200).json({...changes});
+        } else {
+            res.status(500).json({errorMessage: 'There was an error updating the ticket.'})
+        }
+        
     })
     .catch( err => {
         res.status(500).json({errorMessage: 'There was an error updating the ticket.'});

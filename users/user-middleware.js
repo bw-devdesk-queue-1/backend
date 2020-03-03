@@ -10,7 +10,10 @@ module.exports = {
 
 function validateCreateUser(req,res,next) {
     // here we will check body for correct stuff to create
-    if(!req.body.username || !req.body.password || !req.body.userType) {
+    const {username, password, userType} = req.body;
+
+    console.log(username, password, userType);
+    if(username === undefined || password === undefined || userType === undefined) {
         res.status(500).json({errorMessage: "Please send a username, password, and userType when creating a user."})
     } else {
         next();
