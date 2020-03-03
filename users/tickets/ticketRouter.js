@@ -2,8 +2,6 @@ const router = require('express').Router();
 const studentRouter = require('../students/studentRouter.js');
 const helperRouter = require('../helpers/helperRouter.js');
 
-const verifyStudentRole = require('../students/verifyStudentRole.js');
-
 const Tickets = require('./ticket-model.js');
 
 const isEmpty = require('../../utils/isEmpty.js');
@@ -13,10 +11,13 @@ const isEmpty = require('../../utils/isEmpty.js');
 // setup student and helper routers
 router.use('/:id/students', studentRouter);
 router.use('/students', studentRouter);
-// router.use('/helpers', helperRouter);
+
+router.use('/helpers', helperRouter);
+router.use('/:id/helpers', helperRouter);
 
 //// GET
 // get all tickets or by query
+// url /api/tickets/
 router.get('/', (req, res) => {
 
     // check to see if there is a query string
@@ -67,8 +68,5 @@ router.get('/:id', (req, res) => {
         res.status(500).json({error: "Unable to retrieve the ticket"})
     })
 })
-
-// instead of /api/tickets/ to create
-// we would have: /api/tickets/students/:studentId <-- where we create ticket
 
 module.exports = router;
