@@ -29,7 +29,6 @@ router.post('/register', validateCreateUser, (req, res) => {
     })
 })
 
-
 router.post('/login', validateUser, validateCredentials, (req, res) => {
     let { id, username, password } = req.body;
     Users.findBy(username)
