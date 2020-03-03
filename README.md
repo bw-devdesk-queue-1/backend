@@ -16,9 +16,13 @@
         - returns the users information and a token that will give access to more endpoints
     - Coming soon
     
-## Endpoints for BASE_URL: https://dev2desk.herokuapp.com/
+# Endpoints for BASE_URL: https://dev2desk.herokuapp.com/
+
+## Onboarding
 
 ### Register a student
+
+type: POST
 
 url: /api/auth/register
 
@@ -48,6 +52,8 @@ error returns:
 
 ### Register a helper
 
+type: POST
+
 url: /api/auth/register
 
 requires:
@@ -75,6 +81,8 @@ error returns:
 
 ### Login
    
+type: POST
+
 url: /api/auth/login
 
 requires:
@@ -97,5 +105,243 @@ error returns:
    errorMessage: "Some error message"
 }
 ```
+
+## User
+
+### Edit a user
+
+type: PUT
    
-   
+url: /api/auth/:id
+
+requires:
+```
+{
+   username: "Some Name",
+   password: "Some password",
+   userType: 0 // 0 for student, 1 for helper
+}
+```
+returns:
+```
+{
+   id: 1,
+   username: "Some Name",
+   userType: 0
+}
+```
+error returns: 
+```
+{
+   errorMessage: "The user could not be updated"
+}
+```
+
+### Delete a user
+
+type: DELETE
+
+url: /api/auth/:id
+
+returns:
+```
+{
+   message: "User was deleted.
+}
+```
+error returns: 
+```
+{
+   errorMessage: "User could not be deleted."
+}
+```
+
+## General Ticket Behavior
+
+### Get all tickets in system
+
+type: GET
+
+url: /api/tickets/
+
+returns:
+```
+[
+   {
+      id: 1,
+      title: "Some title",
+      description: "Some description",
+      tried: "What I've tried",
+      category: "Some Category",
+      status: "Un-assigned"
+   },
+   {
+      id: 2,
+      title: "Some title",
+      description: "Some description",
+      tried: "What I've tried",
+      category: "Some Category",
+      status: "Un-assigned"
+   }
+]
+```
+error returns:
+```
+{
+   errorMessage: "There was an error getting all tickets."
+}
+```
+
+### Get a ticket by id
+
+type: GET
+
+url: /api/tickets/:id
+
+returns:
+```
+{
+   id: 1,
+   title: "Some title",
+   description: "Some description",
+   tried: "What I've tried",
+   category: "Some Category",
+   status: "Un-assigned"
+}
+```
+error returns: 
+```
+{
+   errorMessage: "There was an error getting the ticket."
+}
+```
+
+## Student behavior
+
+### Create a ticket
+
+type: POST
+
+url: /api/tickets/students/:studentId
+
+requires:
+```
+{
+   title: "Some title",
+   description: "Some description",
+   tried: "What I've tried",
+   category: "Some Category"
+}
+```
+returns:
+```
+{
+   studentId: 3,
+   ticket: {
+      id: 1,
+      title: "Some title",
+      description: "Some description",
+      tried: "What I've tried",
+      category: "Some Category",
+      status: "Un-assigned"
+   }
+}
+```
+error returns: 
+```
+{
+   errorMessage: "Their was an error creating the ticket."
+}
+```
+
+### Get all tickets for a student
+
+type: GET
+
+url: /api/tickets/students/:studentId
+
+returns:
+```
+[
+   {
+      studentId: 3,
+      ticket: {
+         id: 1,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
+      }
+   },
+   {
+      studentId: 3,
+      ticket: {
+         id: 2,
+         title: "Some other title",
+         description: "Some other description",
+         tried: "What I've tried other",
+         category: "Some Other Category",
+         status: "Un-assigned"
+      }
+   }
+]
+```
+error returns: 
+```
+{
+   errorMessage: "Their was an error getting all the tickets."
+}
+```
+
+### Update a ticket
+
+type: PUT
+
+url: /api/tickets/:id/students/
+
+requires:
+```
+{
+   title: "Some title",
+   description: "Some description",
+   tried: "What I've tried",
+   category: "Some Category"
+}
+```
+returns:
+```
+{
+   id: 1,
+   title: "Some title",
+   description: "Some description",
+   tried: "What I've tried",
+   category: "Some Category",
+   status: "Un-assigned"
+}
+```
+error returns: 
+```
+{
+   errorMessage: "Their was an error updating the ticket."
+}
+```
+
+### Delete a ticket
+
+type: DELETE
+
+url: /api/tickets/:id/students/
+
+returns:
+```
+{
+   message: "Ticket was deleted from the system."
+}
+```
+error returns: 
+```
+{
+   errorMessage: "Their was an error deleting the ticket."
+}
+```
