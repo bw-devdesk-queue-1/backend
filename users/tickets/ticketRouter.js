@@ -11,6 +11,7 @@ const isEmpty = require('../../utils/isEmpty.js');
 // url to be here: /api/tickets?status=Un-Assigned
 
 // setup student and helper routers
+router.use('/:id/students', studentRouter);
 router.use('/students', studentRouter);
 // router.use('/helpers', helperRouter);
 
@@ -54,7 +55,12 @@ router.get('/:id', (req, res) => {
     
     Tickets.findById(id)
     .then(ticket => {
-        res.status(200).json(ticket)
+        if(ticket !== undefined) {
+            res.status(200).json(ticket)
+        } else {
+            res.status(404).json({message: 'Ticket was not in the system.'})
+        }
+        
     })
     .catch(err => {
         console.log(err)

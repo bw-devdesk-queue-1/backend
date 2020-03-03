@@ -35,7 +35,7 @@ router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
     Students.insert({ title, description, tried, category })
     .then( ticketId => {
         // link to userTickets
-        console.log('linking', studentId, ticketId[0])
+        // console.log('linking', studentId, ticketId[0])
         Students.linkToStudent(studentId, ticketId[0])
         .then( userTicketId => {
             //ticket was linked
@@ -53,7 +53,7 @@ router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
         })
         .catch( err => {
             // await Students.remove(ticketId[0]);
-            console.log(err);
+            // console.log(err);
             res.status(500).json({ errorMessage: "Ticket was created but not linked, will be deleted."});
         })
     })
@@ -104,7 +104,7 @@ router.get('/:studentId', verifyStudentExists, (req, res) => {
             res.status(200).json(newTickets)
         })
         .catch(err => {
-            console.log(err)
+            // console.log(err)
             res.status(500).json({error: "Unable to retrieve the tickets"})
         })
 
@@ -116,18 +116,21 @@ router.get('/:studentId', verifyStudentExists, (req, res) => {
 router.put('/', verifyTicketExists, verifyTicket, (req,res) => {
     // grab the ticket id and changes
     const changes = req.body;
-    console.log(req.params);
+    const { id } = req.params;
+    // console.log('updating ticket', id, changes);
     // update the ticket
-    Students.update(changes.id, changes)
+    Students.update(id, changes)
     .then( success => {
+        // console.log(success);
         if(success) {
-            res.status(200).json({...changes});
+            res.status(200).json({id: Number(id), ...changes});
         } else {
             res.status(500).json({errorMessage: 'There was an error updating the ticket.'})
         }
         
     })
     .catch( err => {
+        // console.log(err);
         res.status(500).json({errorMessage: 'There was an error updating the ticket.'});
     })
 })

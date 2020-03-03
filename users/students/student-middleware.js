@@ -20,7 +20,7 @@ function verifyStudentExists(req,res,next) {
 
 function verifyTicketExists(req,res,next) {
     // check to see if ticket is in the system
-    const { id } = req.body;
+    const { id } = req.params;
     db('tickets').where({ id })
     .then( ticket => {
         next();
