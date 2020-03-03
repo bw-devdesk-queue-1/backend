@@ -345,3 +345,25 @@ error returns:
    errorMessage: "Their was an error deleting the ticket."
 }
 ```
+
+## Other
+
+### Get all categories
+
+type: GET
+
+url: /api/categories/
+
+returns: 
+```
+[
+   'Git',
+   'Express',
+   'React',
+   'HTML',
+   'CSS',
+   'General Javascript',
+   'General Computer',
+   'Other'
+]
+```

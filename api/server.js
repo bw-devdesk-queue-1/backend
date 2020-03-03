@@ -7,6 +7,8 @@ const authenticate = require('../auth/authenticate-middleware.js');
 
 const ticketRouter = require('../users/tickets/ticketRouter.js');
 
+const categoryRouter = require('../users/categories/categoryRouter.js');
+
 const server = express();
 
 server.use(helmet());
@@ -31,6 +33,7 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/tickets', ticketRouter);
+server.use('/api/categories', categoryRouter)
 
 server.get('/', (req, res) => {
     res.send(`<h1>Welcome to the Dev Desk API</h1>`)
