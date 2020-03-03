@@ -346,6 +346,76 @@ error returns:
 }
 ```
 
+## Helper Behavior
+
+### Get all tickets for helper
+
+type: GET
+
+url: /api/tickets/helpers/:helperId
+
+returns:
+```
+[
+   {
+      studentId: 3,
+      helperId: 4,
+      ticket: {
+         id: 7,
+         title: 'Some title',
+         description: 'Some description',
+         tried: 'Some tried',
+         category: 'Some category',
+         status: 'Some status'
+      }
+   },
+   {
+      studentId: 8,
+      helperId: 4,
+      ticket: {
+         id: 12,
+         title: 'Some other title',
+         description: 'Some other description',
+         tried: 'Some other tried',
+         category: 'Some other category',
+         status: 'Some other status'
+      }
+   }
+]
+```
+error returns: 
+```
+{
+   errorMessage: "There was an error getting all helper's tickets."
+}
+```
+
+### Assign/Un-assign helper to ticket
+
+type: PUT
+
+url: /api/tickets/:id/helpers/:helperId
+
+requires:
+```
+{
+   status: "Pending" // assigns to helper, while "Resolved" or "Un-assigned" removes from helper
+}
+```
+returns:
+```
+{
+   message: 'Ticket was updated and linked appropriately.'
+}
+```
+error returns: 
+```
+{
+   errorMessage: 'There was an error updating and linking the ticket.'
+}
+```
+
+
 ## Other
 
 ### Get all categories
