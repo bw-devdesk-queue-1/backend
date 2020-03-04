@@ -42,7 +42,7 @@ router.post('/login', validateUser, validateCredentials, (req, res) => {
             res.status(200).json({
                 id: user.id,
                 username: username,            
-                userType: user.userType, // return userType
+                userType: Number(user.userType), // return userType
                 token // attach the token as part of the response
             });
         } else {
