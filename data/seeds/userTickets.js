@@ -6,11 +6,11 @@ exports.seed = function(knex) {
         return knex('userTickets').insert([
           {studentId: 10, ticketId: 1},
           {studentId: 3, ticketId: 2},
-          {StudentId: 3, ticketId: 3},
-          {StudentId: 6, ticketId: 4},
-          {StudentId: 3, ticketId: 5},
-          {StudentId: 5, ticketId: 6},
-          {StudentId: 3, ticketId: 7},
+          {studentId: 3, ticketId: 3},
+          {studentId: 6, ticketId: 4},
+          {studentId: 3, ticketId: 5},
+          {studentId: 5, ticketId: 6},
+          {studentId: 3, ticketId: 7},
         ]);
       });
   };
