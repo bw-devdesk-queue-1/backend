@@ -32,8 +32,8 @@ server.use(express.json());
 */
 
 server.use('/api/auth', authRouter);
-server.use('/api/tickets', ticketRouter);
-server.use('/api/categories', categoryRouter)
+server.use('/api/tickets', authenticate, ticketRouter);
+server.use('/api/categories', authenticate, categoryRouter)
 
 server.get('/', (req, res) => {
     res.send(`<h1>Welcome to the Dev Desk API</h1>`)

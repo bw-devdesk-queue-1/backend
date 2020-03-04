@@ -1,5 +1,6 @@
 const router = require('express').Router({mergeParams: true});
 const Helpers = require('./helper-model.js');
+const verifyHelperRole = require('./verifyHelperRole.js')
 const { verifyHelperExists, verifyTicketExists, verifyHelperTicket } = require('./helper-middleware.js');
 const isEmpty = require('../../utils/isEmpty.js');
 
@@ -70,7 +71,7 @@ router.get('/:helperId', verifyHelperExists, (req, res) => {
 //// PUT
 // update a ticket's information
 // url /api/tickets/:id/helpers/:helperId
-router.put('/:helperId', verifyTicketExists, verifyHelperTicket, verifyHelperExists, (req, res) => {
+router.put('/:helperId', verifyHelperRole, verifyTicketExists, verifyHelperTicket, verifyHelperExists, (req, res) => {
     const { id, helperId } = req.params;
     const ticket = req.body;
     Helpers.updateTicket(id, ticket)

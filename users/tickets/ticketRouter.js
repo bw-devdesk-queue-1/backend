@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const studentRouter = require('../students/studentRouter.js');
 const helperRouter = require('../helpers/helperRouter.js');
-
+const authenticate = require('../../auth/authenticate-middleware.js')
 const Tickets = require('./ticket-model.js');
 
 const isEmpty = require('../../utils/isEmpty.js');
@@ -18,7 +18,7 @@ router.use('/:id/helpers', helperRouter);
 //// GET
 // get all tickets or by query
 // url /api/tickets/
-router.get('/', (req, res) => {
+router.get('/', authenticate, (req, res) => {
 
     // check to see if there is a query string
     const isQuery = isEmpty(req.query);

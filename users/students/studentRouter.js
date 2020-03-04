@@ -1,6 +1,7 @@
 const router = require('express').Router({mergeParams: true});
 const Students = require('./student-model.js');
 const { verifyStudentExists, verifyTicketExists, verifyTicket } = require('./student-middleware.js');
+const verifyStudent = require('./verifyStudentRole.js');
 const isEmpty = require('../../utils/isEmpty.js');
 
 // url to get here: base-url/api/tickets/:id/students
@@ -25,7 +26,7 @@ const isEmpty = require('../../utils/isEmpty.js');
 
 //// POST
 // create a ticket for a student
-router.post('/:studentId', verifyStudentExists, verifyTicket, (req, res) => {
+router.post('/:studentId', verifyStudentExists, verifyStudent, verifyTicket, (req, res) => {
 
     // grab from body
     const { title, description, tried, category } = req.body;

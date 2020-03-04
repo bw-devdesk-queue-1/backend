@@ -6,7 +6,7 @@ const Users = require('../users/user-model.js');
 const {validateUser, validateCreateUser, validateCredentials, validateUserExists} = require('../users/user-middleware.js');
 
 const jwt = require('jsonwebtoken'); // installed this library
-const secrets = require('./config/secret.js');
+const secrets = require('./config/secrets.js');
 
 // actions
 router.post('/register', validateCreateUser, (req, res) => {
@@ -67,6 +67,7 @@ function generateToken(user) {
   };
 
   // extract the secret away so it can be required and used where needed
+  console.log("this is secrets", secrets)
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
 
