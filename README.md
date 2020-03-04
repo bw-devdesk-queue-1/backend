@@ -95,8 +95,10 @@ requires:
 returns:
 ```
 {
-   token: "$P$984478476IagS59wHZvyQMArzfx58u.", // example hash
-   userType: 0 // if a student or 1 if a helper
+   id: 3,
+   username: 'Some name',
+   userType: 0, // if a student or 1 if a helper
+   token: "$P$984478476IagS59wHZvyQMArzfx58u." // example hash
 }
 ```
 error returns: 
