@@ -3,7 +3,8 @@ const db = require('../../data/dbConfig.js');
 module.exports = {
     find, 
     findById,
-    findByFilter
+    findByFilter,
+    findAll
 }
 
 // grab all tickets
@@ -22,4 +23,10 @@ function findById(id) {
 function findByFilter(filter) {
     return db('tickets')
       .where(filter);
+}
+
+// get all tickets with student information
+function findAll() {
+    return db("tickets as t")
+        .join("userTickets as u", "u.ticketId", "t.id")
 }

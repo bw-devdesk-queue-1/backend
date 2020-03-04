@@ -168,20 +168,28 @@ returns:
 ```
 [
    {
-      id: 1,
-      title: "Some title",
-      description: "Some description",
-      tried: "What I've tried",
-      category: "Some Category",
-      status: "Un-assigned"
+      studentId: 3,
+      helperId: 4,
+      ticket: {
+         id: 1,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
+      }
    },
    {
-      id: 2,
-      title: "Some title",
-      description: "Some description",
-      tried: "What I've tried",
-      category: "Some Category",
-      status: "Un-assigned"
+      studentId: 5,
+      helperId: 8,
+      ticket: {
+         id: 6,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
+      }
    }
 ]
 ```

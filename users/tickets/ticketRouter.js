@@ -21,8 +21,7 @@ router.use('/:id/helpers', helperRouter);
 router.get('/', (req, res) => {
 
     // check to see if there is a query string
-    const isQuery = isEmpty(req.query);
-
+    const isQuery = !isEmpty(req.query);
     if(isQuery) {
 
         // grab all queries
@@ -37,9 +36,23 @@ router.get('/', (req, res) => {
 
     } else {
 
-        Tickets.find()
+        Tickets.findAll()
         .then(tickets => {
-            res.status(200).json(tickets)
+            const newTickets = tickets.map( ticket => {
+                return {
+                    studentId: ticket.studentId,
+                    helperId: ticket.helperId,
+                    ticket: {
+                        id: ticket.id,
+                        title: ticket.title,
+                        description: ticket.description,
+                        tried: ticket.tried,
+                        category: ticket.category,
+                        status: ticket.status
+                    }
+                }
+            })
+            res.status(200).json(newTickets)
         })
         .catch(err => {
             console.log(err)
