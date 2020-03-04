@@ -22,7 +22,7 @@ const isEmpty = require('../../utils/isEmpty.js');
 //// GET
 // get all their tickets and query if exists
 // url /api/tickets/helpers/:helperId
-router.get('/:helperId', verifyHelperExists, (req, res) => {
+router.get('/:helperId', verifyHelperRole, verifyHelperExists, (req, res) => {
     const { helperId } = req.params;
     const isQuery = !isEmpty(req.query);
     // console.log(isQuery);
