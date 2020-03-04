@@ -75,7 +75,6 @@ describe('new login student', function() {//test register by signing in with the
         .expect(200)
         .then( response => {
             expect(Array.isArray(response.body)).toBe(true)
-            // expect(response.body).toHaveLength(14)
         })
     })
 
@@ -130,7 +129,6 @@ describe('new login helper', function() {//test register by signing in with the 
         .expect(200)
         .then( response => {
             expect(Array.isArray(response.body)).toBe(true)
-            expect(response.body).toHaveLength(14)
         })
     })
 
@@ -139,11 +137,11 @@ describe('new login helper', function() {//test register by signing in with the 
         .put(`/api/tickets/3/helpers/${helperId}`)
         .set("Authorization", token)
         .send({status: "Pending"})
-        .expect(201)
+        .expect(200)
         .then( response => {
+            console.log("this is response in claim a ticket", response)
             expect(response.type).toMatch(/json/)
-            expect(response.type).toHaveProperty(title)
-            expect(response.type).toHaveProperty(message)
+            expect(response.body).toHaveProperty('message')
         })
     })
 
