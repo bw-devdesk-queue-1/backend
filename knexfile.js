@@ -16,6 +16,19 @@ module.exports = {
     }
   },
 
+  testing: {
+    client: 'sqlite3',
+    connection: {
+      filename: './database/devdesk.db3'
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: './data/migrations',
+      tableName: 'dbmigrations',
+    },
+    seeds: { directory: './data/seeds' },
+  },
+
   staging: {
     client: 'postgresql',
     connection: {
