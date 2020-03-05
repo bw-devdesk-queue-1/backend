@@ -1,7 +1,10 @@
 const router = require('express').Router({mergeParams: true});
 const Students = require('./student-model.js');
+const Users = require('../user-model.js');
+
 const { verifyStudentExists, verifyTicketExists, verifyTicket } = require('./student-middleware.js');
 const isEmpty = require('../../utils/isEmpty.js');
+const getUser = require('../../utils/getUser.js');
 
 // url to get here: base-url/api/tickets/:id/students
 // url to get here: base-url/api/tickets/students/:id
@@ -87,24 +90,39 @@ router.get('/:studentId', verifyStudentExists, (req, res) => {
         Students.find(studentId)
         .then(tickets => {
             //format
-            const newTickets = tickets.map( ticket => {
-                return {
-                    studentId: ticket.studentId,
-                    helperId: ticket.helperId,
-                    ticket: {
-                        id: ticket.id,
-                        title: ticket.title,
-                        description: ticket.description,
-                        tried: ticket.tried,
-                        category: ticket.category,
-                        status: ticket.status
+            Users.find()
+            .then( users => {
+                const newTickets = tickets.map( ticket => {
+                    const student = getUser(ticket.studentId, users);
+                    const helper = getUser(ticket.helperId, users);
+                    return {
+                        student: {
+                            id: student.id,
+                            username: student.username
+                        },
+                        helper: {
+                            id: helper.id,
+                            username: helper.username
+                        },
+                        ticket: {
+                            id: ticket.id,
+                            title: ticket.title,
+                            description: ticket.description,
+                            tried: ticket.tried,
+                            category: ticket.category,
+                            status: ticket.status
+                        }
                     }
-                }
+                })
+                res.status(200).json(newTickets)
             })
-            res.status(200).json(newTickets)
+            .catch( err => {
+                console.log('findAll err', err);
+            })
+            
         })
         .catch(err => {
-            // console.log(err)
+            console.log('students find err', err);
             res.status(500).json({error: "Unable to retrieve the tickets"})
         })
 

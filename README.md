@@ -223,12 +223,22 @@ url: /api/tickets/:id
 returns:
 ```
 {
-   id: 1,
-   title: "Some title",
-   description: "Some description",
-   tried: "What I've tried",
-   category: "Some Category",
-   status: "Un-assigned"
+      student:{
+         id: 3,
+         username: "Example Student"
+      },
+      helper: {
+         id: 4,
+         username: "Example Helper"
+      },
+      ticket: {
+         id: 1,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
+      }
 }
 ```
 error returns: 
@@ -286,7 +296,14 @@ returns:
 ```
 [
    {
-      studentId: 3,
+      student:{
+         id: 3,
+         username: "Example Student"
+      },
+      helper: {
+         id: 4,
+         username: "Example Helper"
+      },
       ticket: {
          id: 1,
          title: "Some title",
@@ -295,15 +312,21 @@ returns:
          category: "Some Category",
          status: "Un-assigned"
       }
-   },
-   {
-      studentId: 3,
+   },{
+      student:{
+         id: 3,
+         username: "Example Student"
+      },
+      helper: {
+         id: 6,
+         username: "Example Helper"
+      },
       ticket: {
-         id: 2,
-         title: "Some other title",
-         description: "Some other description",
-         tried: "What I've tried other",
-         category: "Some Other Category",
+         id: 8,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
          status: "Un-assigned"
       }
    }
@@ -380,27 +403,38 @@ returns:
 ```
 [
    {
-      studentId: 3,
-      helperId: 4,
+      student:{
+         id: 3,
+         username: "Example Student"
+      },
+      helper: {
+         id: 4,
+         username: "Example Helper"
+      },
       ticket: {
-         id: 7,
-         title: 'Some title',
-         description: 'Some description',
-         tried: 'Some tried',
-         category: 'Some category',
-         status: 'Some status'
+         id: 1,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
       }
-   },
-   {
-      studentId: 8,
-      helperId: 4,
+   },{
+      student:{
+         id: 6,
+         username: "Example Student"
+      },
+      helper: {
+         id: 4,
+         username: "Example Helper"
+      },
       ticket: {
-         id: 12,
-         title: 'Some other title',
-         description: 'Some other description',
-         tried: 'Some other tried',
-         category: 'Some other category',
-         status: 'Some other status'
+         id: 10,
+         title: "Some title",
+         description: "Some description",
+         tried: "What I've tried",
+         category: "Some Category",
+         status: "Un-assigned"
       }
    }
 ]

@@ -1,4 +1,5 @@
 const db = require('../../data/dbConfig.js');
+const knex = require('knex');
 
 module.exports = {
     find, 
@@ -14,8 +15,8 @@ function find(){
 
 // grab a specific ticket for anyone
 function findById(id) {
-    return db('tickets')
-    .where({id})
+    return db("tickets as t")
+        .join("userTickets as u", "u.ticketId", knex.raw("?",[id]))
     .first()
 }
 
