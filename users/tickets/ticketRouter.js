@@ -3,6 +3,7 @@ const studentRouter = require('../students/studentRouter.js');
 const helperRouter = require('../helpers/helperRouter.js');
 
 const Tickets = require('./ticket-model.js');
+const Users = require('../user-model.js');
 
 const isEmpty = require('../../utils/isEmpty.js');
 
@@ -38,21 +39,49 @@ router.get('/', (req, res) => {
 
         Tickets.findAll()
         .then(tickets => {
-            const newTickets = tickets.map( ticket => {
-                return {
-                    studentId: ticket.studentId,
-                    helperId: ticket.helperId,
-                    ticket: {
-                        id: ticket.id,
-                        title: ticket.title,
-                        description: ticket.description,
-                        tried: ticket.tried,
-                        category: ticket.category,
-                        status: ticket.status
+            Users.find()
+            .then( users => {
+                // match users to their tickets
+                // console.log('users', users);
+                // console.log('tickets', tickets);
+                const newTickets = tickets.map( ticket => {
+                    const student = getUser(ticket.studentId, users);
+                    const helper = getUser(ticket.helperId, users);
+                    
+                    function getUser(id, list) {
+                        // iterate through list and return list item with matching id
+                        let item = list.filter( item => { return id === item.id });
+                        if(item.length === 0) {
+                            // console.log('setting item to blank')
+                            return {
+                                id: 0,
+                                username: ""
+                            }
+                        } 
+                        return item[0];
                     }
-                }
-            })
-            res.status(200).json(newTickets)
+                    
+                    return {
+                        student: {
+                            id: student.id,
+                            username: student.username        
+                        },
+                        helper: {
+                            id: helper.id,
+                            username: helper.username
+                        },
+                        ticket: {
+                            id: ticket.id,
+                            title: ticket.title,
+                            description: ticket.description,
+                            tried: ticket.tried,
+                            category: ticket.category,
+                            status: ticket.status
+                        }
+                    }
+                })
+                res.status(200).json(newTickets)
+            });
         })
         .catch(err => {
             console.log(err)
