@@ -170,8 +170,14 @@ returns:
 ```
 [
    {
-      studentId: 3,
-      helperId: 4,
+      student:{
+         id: 3,
+         username: "Example Student"
+      },
+      helper: {
+         id: 4,
+         username: "Example Helper"
+      },
       ticket: {
          id: 1,
          title: "Some title",
@@ -182,8 +188,14 @@ returns:
       }
    },
    {
-      studentId: 5,
-      helperId: 8,
+      student:{
+         id: 5,
+         username: "Example Student"
+      },
+      helper: {
+         id: 6,
+         username: "Example Helper"
+      },
       ticket: {
          id: 6,
          title: "Some title",
