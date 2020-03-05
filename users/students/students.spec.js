@@ -11,10 +11,10 @@ describe('testing the add function on the database', () => {
     describe('add function', () => {
         it('add new users into the db', async () => {
             let userNumber;
-            userNumber = await db('users'
-            await auth.add({ username: 'Harry', password: 'potter', userType: '0'})
-            await auth.add({ username: 'Ron', password: 'weasley', userType: '1'})
-            await auth.add({ username: 'Hermoine', password: 'granger', userType: '0'})
+            userNumber = await db('users')
+            await db('users').add({ username: 'Harry', password: 'potter', userType: '0'})
+            await db('users').add({ username: 'Ron', password: 'weasley', userType: '1'})
+            await db('users').add({ username: 'Hermoine', password: 'granger', userType: '0'})
             userNumber = await db('users');
             expect(userNumber).toHaveLength(3)
         });
