@@ -1,20 +1,24 @@
+  
 const jwt = require('jsonwebtoken');
-
+const secrets = require('../../auth/config/secrets.js')
 
 module.exports = (req, res, next) => {
-  const UserType = 1 //sets the desired result for type
-  const secret = process.env.JWT_SECRET || "make sure this stays between us" // secret on the token
+  const { authorization } = req.headers;
 
-    jwt.verify(UserType, secret, (err, decodedToken) => {  //if type and secret match the type and secret on the token then the request is allowed to proceed
+  // const cert = fs.readFileSync('public.pem')
+    jwt.verify(authorization, secrets.jwtSecret, (err, decodedToken) => {  //if type and secret match the type and secret on the token then the request is allowed to proceed
       console.log("This is req.headers", req.headers)
+      console.log("This is decoded token",decodedToken)
       if (err) {
-        res.status(403).json({message: "your user type does not ahve access to this"})
+        res.status(403).json({message: "your user type does not have access to this"})
       } else {
+        if(decodedToken.userType == '1'){
         req.decodedToken = decodedToken
-
         next()
+        } else {
+          res.status(403).json({message: "your user type does not have access to this"})
+        }
       }
 
     })
  
-};
